@@ -13,7 +13,7 @@ function createVirtualHost(domainName, dirPath) {
 var app = express();
 var noorHost = createVirtualHost("www.noor.com", "public");
 var noor1Host = createVirtualHost("www.noor1.com", "public1");
-var adminHost = createVirtualHost("www.multidomainapp.herokuapp.com", "admin");
+var adminHost = createVirtualHost("https://multidomainapp.herokuapp.com", "admin");
 var ablogHost = createVirtualHost("www.blog.com", "blog");
 app.use(noor1Host);
 app.use(noorHost);	
@@ -33,7 +33,7 @@ require('./app/routes.js')(app);
 
 
 
-var port = 3000;
+var port = 80;
 app.listen(port, function() {
     console.log('Express server listening on port %d in %s mode', port, app.settings.env);
 });
