@@ -1,0 +1,38 @@
+
+
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+
+                
+                <!-- First Blog Post -->
+                <h1 class="page-header">
+                   Latest Posts
+                    <!-- <small>Secondary Text</small> -->
+                </h1>
+               
+            <div class="well"  ng-repeat="todo in todos">
+<h2>
+                    <a>{{ todo.text }}</a>
+                </h2>
+<p class="lead">
+    by <a >Noor({{ todo.cat }})</a>
+</p>
+<hr>
+<p>{{todo.des}}</p>
+<p><span class="glyphicon glyphicon-time"></span> Posted on August 8, 2015 at 10:45 AM</p>
+ <a class="btn btn-primary"  href="#/c/{{todo._id}}">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+</div>
+
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a href="#">&larr; Older</a>
+                    </li>
+                    <li class="next">
+                        <a href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+
+            </div>
+
+          
