@@ -13,7 +13,7 @@ function createVirtualHost(domainName, dirPath) {
 var app = express();
 var noorHost = createVirtualHost("www.noor.com", "public");
 var noor1Host = createVirtualHost("www.noor1.com", "public1");
-var adminHost = createVirtualHost(https://multidomainapp.herokuapp.com", "admin");
+var adminHost = createVirtualHost("https://multidomainapp.herokuapp.com", "admin");
 var ablogHost = createVirtualHost("www.blog.com", "blog");
 app.use(noor1Host);
 app.use(noorHost);	
