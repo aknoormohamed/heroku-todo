@@ -34,15 +34,15 @@ var redirect = express();
 
 redirect.use(function(req, res){
   if (!module.parent) console.log(req.vhost);
-  res.redirect('http://example.com:3000/' + req.vhost[0]);
+  res.redirect('https://multidomainapp.herokuapp.com:3000/' + req.vhost[0]);
 });
 
 // Vhost app
 
 var app = module.exports = express();
 
-app.use(vhost('*.example.com', redirect)); // Serves all subdomains via Redirect app
-app.use(vhost('example.com', main)); // Serves top level domain via Main server app
+app.use(vhost('*.multidomainapp.herokuapp.com', redirect)); // Serves all subdomains via Redirect app
+app.use(vhost('https://multidomainapp.herokuapp.com/', main)); // Serves top level domain via Main server app
 
 /* istanbul ignore next */
 if (!module.parent) {
