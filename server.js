@@ -1,51 +1,39 @@
 
-/**
- * Module dependencies.
- */
-
-var express = require('../..');
-var logger = require('morgan');
+//var application_root = __dirname;
+var express = require('express');
 var vhost = require('vhost');
-
-/*
-edit /etc/hosts:
-127.0.0.1       foo.example.com
-127.0.0.1       bar.example.com
-127.0.0.1       example.com
-*/
-
-// Main server app
-
-var main = express();
-
-if (!module.parent) main.use(logger('dev'));
-
-main.get('/', function(req, res){
-  res.send('Hello from main app!');
-});
-
-main.get('/:sub', function(req, res){
-  res.send('requested ' + req.params.sub);
-});
-
-// Redirect app
-
-var redirect = express();
-
-redirect.use(function(req, res){
-  if (!module.parent) console.log(req.vhost);
-  res.redirect('https://multidomainapp.herokuapp.com' + req.vhost[0]);
-});
-
-// Vhost app
-
-var app = module.exports = express();
-
-app.use(vhost('*.multidomainapp.herokuapp.com', redirect)); // Serves all subdomains via Redirect app
-app.use(vhost('https://multidomainapp.herokuapp.com', main)); // Serves top level domain via Main server app
-
-/* istanbul ignore next */
-if (!module.parent) {
-  app.listen(80);
-  console.log('Express started on port 3000');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/demonoor');
+function createVirtualHost(domainName, dirPath) {
+    return vhost(domainName, express.static(dirPath));
 }
+var app = express();
+var noorHost = createVirtualHost("www.noor.com", "public");
+var noor1Host = createVirtualHost("www.noor1.com", "public1");
+var adminHost = createVirtualHost("localhost", "admin");
+var ablogHost = createVirtualHost("www.blog.com", "blog");
+app.use(noor1Host);
+app.use(noorHost);	
+app.use(adminHost);
+app.use(ablogHost);
+app.use(morgan('dev')); 
+app.use(bodyParser.urlencoded({
+    'extended': 'true'
+}));
+app.use(bodyParser.json()); 
+app.use(bodyParser.json({
+    type: 'application/vnd.api+json'
+})); 
+app.use(methodOverride('X-HTTP-Method-Override'));
+require('./app/routes.js')(app);
+
+
+
+
+var port = 80;
+app.listen(port, function() {
+    console.log('Express server listening on port %d in %s mode', port, app.settings.env);
+});
